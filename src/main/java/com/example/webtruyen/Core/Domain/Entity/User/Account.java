@@ -19,5 +19,5 @@ public class Account {
     public String SecurityStamp;
     public String ConcurrencyStamp;
     public String PhoneNumber;
-    public String
+    public String PhoneNumberConfirmed;
 }
