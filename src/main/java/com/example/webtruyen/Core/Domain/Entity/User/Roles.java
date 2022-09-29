@@ -14,7 +14,7 @@ import java.util.UUID;
 @Table(name = "Entity_Role")
 public class Roles {
     @Id
-    @Column(name = "role_id")
+    @Column(name = "roles_id")
     public UUID id;
     public String Name;
     public String NormalizedName;

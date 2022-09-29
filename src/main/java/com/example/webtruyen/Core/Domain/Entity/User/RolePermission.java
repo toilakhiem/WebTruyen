@@ -1,18 +1,17 @@
 package com.example.webtruyen.Core.Domain.Entity.User;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
 @Table(name = "Entity_RolePermission")
-public class RolePermission {
+public class RolePermission implements Serializable {
     @Id
-    public UUID RoleId;
-    @Id
-    public UUID PermissionId;
     @ManyToOne
-    @JoinColumn(name = "role_id")
+    @JoinColumn(name = "roles_id")
     public Roles roles;
+    @Id
     @ManyToOne
     @JoinColumn(name = "permission_id")
     public Permission permission;
