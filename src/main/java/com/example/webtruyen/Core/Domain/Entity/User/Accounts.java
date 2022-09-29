@@ -1,5 +1,7 @@
 package com.example.webtruyen.Core.Domain.Entity.User;
 
+import com.example.webtruyen.Core.Domain.Entity.Truyen.Truyen;
+import com.example.webtruyen.Core.Domain.Entity.UserTruyen.UserTruyenDangDoc;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,5 +30,9 @@ public class Accounts {
     public String PhoneNumberConfirmed;
     @OneToMany(mappedBy = "accounts")
     public List<AccountRoles> accountRoles;
+    @OneToMany(mappedBy = "TacGia")
+    public List<Truyen> TruyenCuaToi;
+    @OneToMany(mappedBy = "accounts")
+    public List<UserTruyenDangDoc> TruyenDangDoc;
 
 }
