@@ -11,7 +11,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "Entity_Role")
+@Table(name = "Entity_Roles")
 public class Roles {
     @Id
     @Column(name = "roles_id")
@@ -21,5 +21,7 @@ public class Roles {
     public String Code;
     public String Description;
     @OneToMany(mappedBy = "roles")
-    public List<RolePermission> rolePermissions;
+    public List<RolePermissions> rolePermissions;
+    @OneToMany(mappedBy = "roles")
+    public List<AccountRoles> accountRoles;
 }

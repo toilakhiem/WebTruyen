@@ -10,8 +10,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "Entity_Permission")
-public class Permission {
+@Table(name = "Entity_Permissions")
+public class Permissions {
     @Id
     @Column(name = "permission_id")
     public UUID id;
@@ -19,7 +19,7 @@ public class Permission {
     public String NormalizedName;
     public String Code;
     public String Description;
-    @OneToMany(mappedBy = "permission")
-    public List<RolePermission> rolesList;
+    @OneToMany(mappedBy = "permissions")
+    public List<RolePermissions> rolesList;
 
 }

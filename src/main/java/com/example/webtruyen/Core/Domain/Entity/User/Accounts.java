@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.rmi.server.UID;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,7 +11,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "Entity_Account")
-public class Account {
+public class Accounts {
     @Id
     @Column(name = "Id", nullable = false)
     public UUID id;
@@ -27,4 +26,7 @@ public class Account {
     public String ConcurrencyStamp;
     public String PhoneNumber;
     public String PhoneNumberConfirmed;
+    @OneToMany(mappedBy = "accounts")
+    public List<AccountRoles> accountRoles;
+
 }
