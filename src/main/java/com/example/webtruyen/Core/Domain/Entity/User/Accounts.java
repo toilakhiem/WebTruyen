@@ -3,13 +3,19 @@ package com.example.webtruyen.Core.Domain.Entity.User;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.rmi.server.UID;
+import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
 @Setter
-public class Account {
-    public UUID Id;
+@Entity
+@Table(name = "Entity_Account")
+public class Accounts {
+    @Id
+    @Column(name = "Id", nullable = false)
+    public UUID id;
+    @Column(name = "Email", nullable = false)
     public String Email;
     public String UserName;
     public String NormalizedUserName;
@@ -20,4 +26,7 @@ public class Account {
     public String ConcurrencyStamp;
     public String PhoneNumber;
     public String PhoneNumberConfirmed;
+    @OneToMany(mappedBy = "accounts")
+    public List<AccountRoles> accountRoles;
+
 }
