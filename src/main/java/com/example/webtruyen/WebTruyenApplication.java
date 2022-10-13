@@ -8,5 +8,4 @@ public class WebTruyenApplication {
     public static void main(String[] args) {
         SpringApplication.run(WebTruyenApplication.class, args);
     }
-
 }
