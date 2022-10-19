@@ -10,4 +10,5 @@ public class ChapterId implements Serializable {
         this.TenChuong = TenChuong;
         this.ChuongSo = ChuongSo;
     }
+
 }

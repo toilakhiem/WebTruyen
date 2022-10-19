@@ -1,6 +1,5 @@
 package com.example.webtruyen.Core.Domain.Entity.User;
 
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,17 +10,16 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "Entity_Roles")
-public class Roles {
+@Table(name = "Entity_Permissions")
+public class Permission {
     @Id
-    @Column(name = "roles_id")
+    @Column(name = "permission_id")
     public UUID id;
     public String Name;
     public String NormalizedName;
     public String Code;
     public String Description;
-    @OneToMany(mappedBy = "roles")
-    public List<RolePermissions> rolePermissions;
-    @OneToMany(mappedBy = "roles")
-    public List<AccountRoles> accountRoles;
+    @OneToMany(mappedBy = "permissions")
+    public List<RolePermission> rolesList;
+
 }
