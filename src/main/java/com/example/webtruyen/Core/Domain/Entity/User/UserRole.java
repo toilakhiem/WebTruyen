@@ -1,24 +1,29 @@
 package com.example.webtruyen.Core.Domain.Entity.User;
 
-import com.example.webtruyen.Core.Domain.Entity.User.ID.UserRoleKey;
+import com.example.webtruyen.Core.Domain.Key.UserRoleKey;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "Entity_UserRoles")
+@Table(name = "UserRole")
 @NoArgsConstructor
+@Getter
+@Setter
 public class UserRole implements Serializable {
     @EmbeddedId
-    private UserRoleKey userRoleId;
-    @ManyToOne @MapsId("userId") @JoinColumn(name = "roles_id")
+    private UserRoleKey userRoleKey;
+    @ManyToOne @MapsId("roleId")
     public Role roles;
-    @ManyToOne @MapsId("roleId") @JoinColumn(name = "accounts_id")
+    @ManyToOne @MapsId("userId")
     public User user;
 
-    public UserRole(Role roles, User accounts) {
+    public UserRole(UserRoleKey userRoleKey, Role roles, User user) {
+        this.userRoleKey = userRoleKey;
         this.roles = roles;
-        this.user = accounts;
+        this.user = user;
     }
 }

@@ -1,22 +1,24 @@
-package com.example.webtruyen.Core.Domain.Entity.User.ID;
+package com.example.webtruyen.Core.Domain.Key;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
-import java.util.UUID;
-
 @Embeddable
+@Getter
+@Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 public class UserRoleKey implements Serializable {
     private static final long serialVersionUID = -1469598234263842813L;
-    @Column(name = "id")
-    private UUID userId;
-    @Column(name = "id")
-    private UUID roleId;
+    private Long userId;
+    private Long roleId;
 
-    public UserRoleKey(UUID userId, UUID roleId) {
+    public UserRoleKey(Long userId, Long roleId) {
         this.userId = userId;
         this.roleId = roleId;
     }

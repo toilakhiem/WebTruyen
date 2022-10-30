@@ -2,6 +2,7 @@ package com.example.webtruyen.Core.Domain.Entity.User;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.List;
@@ -10,11 +11,11 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@Table(name = "Entity_Permissions")
+@Table(name = "Permissions")
 public class Permission {
     @Id
-    @Column(name = "permission_id")
-    public UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long id;
     public String Name;
     public String NormalizedName;
     public String Code;
