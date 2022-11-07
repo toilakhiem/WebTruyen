@@ -5,6 +5,6 @@ import com.example.webtruyen.Core.Domain.Entity.User.Permission;
 import java.util.List;
 
 public interface PermissionServiceInterface {
-    Permission saveRole(Permission permission);
+    Permission savePermission(Permission permission);
     List<Permission> getAllPermission();
 }

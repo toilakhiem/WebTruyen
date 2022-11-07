@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface RoleRepo extends JpaRepository<Role, Long> {
-    @Query(value = "select  * from Role r where r.Name = ?1",nativeQuery = true)
+public interface RoleRepo extends JpaRepository<Role, UUID> {
+    @Query(value = "select r from Role r where r.Name = ?1")
     Role findByName(String name);
 }

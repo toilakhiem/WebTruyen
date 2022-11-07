@@ -1,16 +1,12 @@
 package com.example.webtruyen.Infrastructure.ServiceIpl;
 
 import com.example.webtruyen.Core.Application.Service.UserServiceInterface;
-import com.example.webtruyen.Core.Domain.Entity.User.Role;
-import com.example.webtruyen.Core.Domain.Entity.User.RolePermission;
-import com.example.webtruyen.Core.Domain.Entity.User.User;
-//import com.example.webtruyen.Core.Domain.Entity.User.UserRole;
-import com.example.webtruyen.Core.Domain.Entity.User.UserRole;
-import com.example.webtruyen.Core.Domain.Key.UserRoleKey;
-import com.example.webtruyen.Infrastructure.Repositories.User.RoleRepo;
-import com.example.webtruyen.Infrastructure.Repositories.User.UserRepo;
-import com.example.webtruyen.Infrastructure.Repositories.User.UserRoleRepo;
+import com.example.webtruyen.Core.Domain.Entity.User.*;
+import com.example.webtruyen.Infrastructure.Repositories.User.*;
+import com.example.webtruyen.Infrastructure.Request.RegisterRequest;
+import com.example.webtruyen.Infrastructure.Response.ViewMyProfileResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.GrantedAuthority;
@@ -33,9 +29,15 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     @Autowired
     private RoleRepo roleRepo;
     @Autowired
-    private UserRoleRepo userRoleRepo;
+    private PermissionRepo permissionRepo;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    private ModelMapper modelMapper;
+
+    public UserService(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
+
     @Override
     @Async
     public User saveUser(User user) {
@@ -48,37 +50,53 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     public void addRoleToUser(String userName, String roleName) {
         User user = userRepo.findByUsername(userName);
         Role role = roleRepo.findByName(roleName);
-        UserRole userRole = new UserRole(new UserRoleKey(role.getId(),user.getId()),role,user);
-        userRoleRepo.save(userRole);
-        user.getAccountRoles().add(userRole);
-        role.getAccountRoles().add(userRole);
+        user.getRoles().add(role);
 
+    }
+    @Override
+    public void addPermissionToRole(String RoleName, String PermissionName) {
+        Role role = roleRepo.findByName(RoleName);
+        Permission permission = permissionRepo.findPermissionByName(PermissionName);
+        role.getPermissions().add(permission);
     }
 
     @Override
-    @Async
     public User getUserByName(String name) {
+        User user = userRepo.findByUsername(name);
+        if(user == null){
+            log.info("User not found");
+            throw new UsernameNotFoundException("User not found in db");
+        }else{
+            log.info("User found : {}", user.getUserName());
+        }
         return userRepo.findByUsername(name);
     }
 
     @Override
-    @Async
-    public List<User> getAllUsers() {
-        return userRepo.findAll();
+    public ViewMyProfileResponse viewMyProfile(String UserName) {
+        User user = userRepo.findByUsername(UserName);
+        ViewMyProfileResponse viewMyProfileResponse = modelMapper.map(user,ViewMyProfileResponse.class);
+        return viewMyProfileResponse;
     }
 
     @Override
-    public void Register(User user) {
+    public void Register(RegisterRequest request) {
+        User user = modelMapper.map(request,User.class);
+        User duplicatedUser = userRepo.findByUsername(user.getUserName());
+        if(duplicatedUser != null) {
+            throw new UsernameNotFoundException("Trung Con Me No Roi");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
         User userSaver = userRepo.findByUsername(user.getUserName());
         Role role = roleRepo.findByName("ROLE_USER");
-        UserRole userRole = new UserRole(new UserRoleKey(role.getId(),userSaver.getId()),role,userSaver);
-        userRoleRepo.save(userRole);
-        userSaver.getAccountRoles().add(userRole);
-        role.getAccountRoles().add(userRole);
+        userSaver.getRoles().add(role);
     }
 
+    @Override
+    public User ViewOtherProfole(String UserName) {
+        return userRepo.findByUsername(UserName);
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -90,14 +108,13 @@ public class UserService implements UserServiceInterface, UserDetailsService {
             log.info("User found : {}", username);
         }
         Set<GrantedAuthority> authorities = new HashSet<>();
-
-        for (UserRole userRole : user.getAccountRoles()) {
-            authorities.add(new SimpleGrantedAuthority(userRole.getRoles().getName()));
-            for (RolePermission rolePermission : userRole.getRoles().getRolePermissions()) {
-                authorities.add(new SimpleGrantedAuthority(rolePermission.getPermissions().getName()));
-            }
-        }
-        return new org.springframework.security.core.userdetails.User(user.getUserName(),user.getPassword(),authorities);
-
+        user.getRoles().forEach(role -> {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
+            role.getPermissions().forEach(permission -> {
+                authorities.add(new SimpleGrantedAuthority(permission.getName()));
+            });
+        });
+        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), authorities);
     }
+
 }

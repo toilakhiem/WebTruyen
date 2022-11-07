@@ -16,9 +16,9 @@ import java.util.UUID;
 public class TheLoai {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long uuid;
+    public Long id;
     public TenTheLoai tenTheLoai;
     public String MoTaNgan;
-    @OneToMany(mappedBy = "theLoai")
-    public List<TruyenTheLoai> truyenTheLoai;
+    @ManyToMany(fetch = FetchType.EAGER)
+    public List<Truyen> Truyen;
 }

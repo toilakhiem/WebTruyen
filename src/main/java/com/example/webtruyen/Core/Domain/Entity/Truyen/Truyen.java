@@ -9,6 +9,9 @@ import lombok.Setter;
 
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 @Getter
 @Setter
@@ -20,7 +23,7 @@ public class Truyen {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
-    public String Ten;
+    public String TenTruyen;
     @ManyToOne
     public User TacGia;
     public String AnhBia;
@@ -29,22 +32,9 @@ public class Truyen {
     public float DanhGia;
     @Column(columnDefinition = "TEXT")
     public String MotaNgan;
-    //TheLoai
-    @OneToMany(mappedBy = "truyen")
-    public List<TruyenTheLoai> truyenTheLoai;
-    //Chapter
+    public LocalDateTime NgayDang;
+    public LocalDateTime LastUpdate;
     @OneToMany(mappedBy = "truyen")
     public List<Chapter> chapterList;
 
-    public Truyen(String tenTruyen, User tacGia, String anhBia, Long luotXem, StatusStory trangThai, float danhGia, String motaNgan, List<TruyenTheLoai> truyenTheLoai, List<Chapter> chapterList) {
-        Ten = tenTruyen;
-        TacGia = tacGia;
-        AnhBia = anhBia;
-        LuotXem = luotXem;
-        TrangThai = trangThai;
-        DanhGia = danhGia;
-        MotaNgan = motaNgan;
-        this.truyenTheLoai = truyenTheLoai;
-        this.chapterList = chapterList;
-    }
 }

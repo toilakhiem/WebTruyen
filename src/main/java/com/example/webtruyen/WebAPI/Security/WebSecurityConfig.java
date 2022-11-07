@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -20,6 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableGlobalMethodSecurity(prePostEnabled=true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     //chỉ quan tâm
     // 1: protected void configure(HttpSecurity http) : Override this method to configure the HttpSecurity : https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/config/annotation/web/builders/HttpSecurity.html
@@ -46,8 +48,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeHttpRequests().antMatchers("/api/login/**", "/api/refresh_token/**").permitAll();
-        http.authorizeHttpRequests().antMatchers("/user/**","/**").permitAll();
+        http.authorizeHttpRequests().antMatchers("/api/login/**", "/user/refresh_token/**").permitAll();
+        http.authorizeHttpRequests().antMatchers("/user/**").permitAll();
+        http.authorizeHttpRequests().antMatchers("/permission/**").hasAnyRole("SUPER_ADMIN", "ADMIN");
+        http.authorizeHttpRequests().antMatchers("/role/**").hasAnyRole("SUPER_ADMIN", "ADMIN");
+        http.authorizeHttpRequests().antMatchers("/admin/**").hasAnyRole("SUPER_ADMIN", "ADMIN");
 //        http.authorizeHttpRequests().antMatchers(HttpMethod.POST, "/api/user/saveRole/**").hasAuthority("ROLE_SUPER_ADMIN");
 //        http.authorizeHttpRequests().antMatchers(HttpMethod.POST, "/api/user/saveRoleToUser/**").hasAuthority("ROLE_SUPER_ADMIN");
         http.authorizeHttpRequests().anyRequest().authenticated();
