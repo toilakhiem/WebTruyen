@@ -1,6 +1,6 @@
 package com.example.webtruyen.Infrastructure.Request;
 
-public class AddRoleToUser {
+public class AddRoleToUserRequest {
     public String UserName;
     public String RoleName;
 }

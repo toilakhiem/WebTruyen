@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -23,33 +24,35 @@ import java.util.UUID;
 @AllArgsConstructor
 public class User {
     @Id
-//    @Column(name = "Id", nullable = false)
-//    @GeneratedValue(generator = "UUID")
-//    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
-    @Column(name = "Email", nullable = false)
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Type(type="org.hibernate.type.UUIDCharType")
+    public UUID id;
+    @Column(nullable = false, unique = true)
     private String Email;
+    @Column(nullable = false, unique = true)
     private String UserName;
-    private String NormalizedUserName;
     private String NormalizeEmail;
-    private Boolean EmailConfirmed;
+    private Boolean EmailConfirmed = false;
+    @Column(nullable = false)
     private String Password;
-    @OneToMany(mappedBy = "user")
-    private List<UserRole> accountRoles = new ArrayList<>();
-    @OneToMany(mappedBy = "TacGia")
-    private List<Truyen> truyenCuaTois;
-//    @OneToMany(mappedBy = "accounts")
-//    private List<UserTruyenDangDoc> TruyenDangDoc;
+    private String Avatar;
+    @Column(nullable = false)
+    private String FirstName;
+    @Column(nullable = false)
+    private String LastName;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Collection<Role> roles = new ArrayList<>();
+    @ManyToMany
+    private Collection<Truyen> truyenCuaTois = new ArrayList<>();
+    @ManyToMany
+    private Collection<Truyen> TruyenDangDoc = new ArrayList<>();
 
-    public User(String email, String userName, String normalizedUserName, String normalizeEmail, Boolean emailConfirmed, String password, List<UserRole> accountRoles, List<Truyen> truyenCuaTois) {
+    public User(String email, String userName, String password, String firstName, String lastName) {
         Email = email;
         UserName = userName;
-        NormalizedUserName = normalizedUserName;
-        NormalizeEmail = normalizeEmail;
-        EmailConfirmed = emailConfirmed;
         Password = password;
-        this.accountRoles = accountRoles;
-        this.truyenCuaTois = truyenCuaTois;
+        FirstName = firstName;
+        LastName = lastName;
     }
 }

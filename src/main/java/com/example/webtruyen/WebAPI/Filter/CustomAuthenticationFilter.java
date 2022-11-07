@@ -2,7 +2,6 @@ package com.example.webtruyen.WebAPI.Filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.example.webtruyen.Infrastructure.Repositories.User.RolePermissionRepo;
 import com.example.webtruyen.Infrastructure.Repositories.User.RoleRepo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +29,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     private final AuthenticationManager authenticationManager;
     @Autowired
     private RoleRepo roleRepo;
-    @Autowired
-    private RolePermissionRepo rolePermissionRepo;
     public CustomAuthenticationFilter(AuthenticationManager authenticationManager){
         this.authenticationManager = authenticationManager;
     }

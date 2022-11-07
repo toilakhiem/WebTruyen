@@ -1,9 +1,12 @@
 package com.example.webtruyen;
 
+import com.example.webtruyen.Core.Domain.Entity.User.Permission;
 import com.example.webtruyen.Core.Domain.Entity.User.Role;
 import com.example.webtruyen.Core.Domain.Entity.User.User;
+import com.example.webtruyen.Infrastructure.ServiceIpl.PermissionService;
 import com.example.webtruyen.Infrastructure.ServiceIpl.RoleService;
 import com.example.webtruyen.Infrastructure.ServiceIpl.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,21 +26,19 @@ public class WebTruyenApplication {
         return new BCryptPasswordEncoder();
     }
     @Bean
-    CommandLineRunner runner(UserService userService, RoleService roleService){
+    public ModelMapper modelMapper(){
+        return new ModelMapper();
+    }
+    @Bean
+    CommandLineRunner runner(UserService userService, RoleService roleService, PermissionService permissionService){
     return args -> {
-
-//            userService.saveRole(new Role(null,"ROLE_USER"));
-//            userService.saveRole(new Role(null,"ROLE_ADMIN"));
-//            userService.saveRole(new Role(null,"ROLE_SUPER_ADMIN"));
-//
-//            userServiceIpl.saveUser(new User(null, "Khiem", "admin", "admin", new ArrayList<>()));
-//            userServiceIpl.addRoleToUser("admin", "ROLE_SUPER_ADMIN");
-        roleService.saveRole(new Role("ROLE_ADMIN","ROLE_ADMIN","2","ADMIN",new ArrayList<>(), new ArrayList<>()));
-        roleService.saveRole(new Role("ROLE_USER","ROLE_USER","3","USER",new ArrayList<>(), new ArrayList<>()));
-        roleService.saveRole(new Role("ROLE_SUPER_ADMIN","ROLE_SUPER_ADMIN","1","SUPER_ADMIN",new ArrayList<>(),new ArrayList<>()));
-
-        userService.saveUser(new User("khiem171222@gmail.com","admin","ADMIN","khiem171222@gmail.com",true,"admin",new ArrayList<>(), new ArrayList<>()));
+        roleService.saveRole(new Role("ROLE_ADMIN","ROLE_ADMIN","ADMIN"));
+        roleService.saveRole(new Role("ROLE_USER","ROLE_USER","USER"));
+        roleService.saveRole(new Role("ROLE_SUPER_ADMIN","ROLE_SUPER_ADMIN","SUPER_ADMIN"));
+        userService.saveUser(new User("khiem171222@gmail.com","admin","admin","admin","admin"));
+        permissionService.savePermission(new Permission("user:write"));
         userService.addRoleToUser("admin","ROLE_SUPER_ADMIN");
+        userService.addPermissionToRole("ROLE_SUPER_ADMIN","user:write");
         };
     }
 }
