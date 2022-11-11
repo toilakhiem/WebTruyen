@@ -4,11 +4,17 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.example.webtruyen.Core.Domain.Entity.Truyen.Truyen;
 import com.example.webtruyen.Core.Domain.Entity.User.Role;
 import com.example.webtruyen.Core.Domain.Entity.User.User;
+import com.example.webtruyen.Infrastructure.Exception.AppException;
+import com.example.webtruyen.Infrastructure.Request.ChangeMyPasswordRequest;
+import com.example.webtruyen.Infrastructure.Request.CreateStoryRequest;
 import com.example.webtruyen.Infrastructure.Request.RegisterRequest;
 import com.example.webtruyen.Infrastructure.Response.ViewMyProfileResponse;
+import com.example.webtruyen.Infrastructure.Response.ViewOtherProfileResponse;
 import com.example.webtruyen.Infrastructure.ServiceIpl.RoleService;
+import com.example.webtruyen.Infrastructure.ServiceIpl.TruyenService;
 import com.example.webtruyen.Infrastructure.ServiceIpl.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +33,7 @@ import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URI;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -41,24 +48,44 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class UserController {
     @Autowired
     private UserService userService;
-    @GetMapping("/test")
-    public ResponseEntity<?> heelo(){
-        return ResponseEntity.ok().body("Thanh Cong");
-    }
+    @Autowired
+    private RoleService roleService;
+    @Autowired
+    private TruyenService truyenService;
     @PostMapping(value = "/register", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> Resgister(@RequestBody RegisterRequest request){
         userService.Register(request);
         return ResponseEntity.ok().body("Dang Ky Thanh Cong");
     }
-    @GetMapping("/me")
-    public ResponseEntity<ViewMyProfileResponse> viewMyProFile(Authentication authentication){
+    @GetMapping(value = "/me")
+    public ResponseEntity<ViewMyProfileResponse> viewMyProFile(){
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String username = loggedInUser.getName();
-            return ResponseEntity.ok().body(userService.viewMyProfile(username));
+        return ResponseEntity.ok().body(userService.viewMyProfile(username));
+    }
+    @PostMapping(value = "/changeMyPassword", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> ChangeMyPassword(@RequestBody ChangeMyPasswordRequest request){
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        String username = loggedInUser.getName();
+        try {
+            userService.ChangeMyPassword(request, username);
+        } catch (AppException e) {
+            throw new RuntimeException(e);
+        }
+        return ResponseEntity.ok().body("Doi Mk Thanh Cong");
     }
     @GetMapping("{username}/view")
-    public ResponseEntity<User> viewOtherProFile(@PathVariable(value = "username") String username){
+    public ResponseEntity<ViewOtherProfileResponse> viewOtherProFile(@PathVariable(value = "username") String username){
         return ResponseEntity.ok().body(userService.ViewOtherProfole(username));
+    }
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping(value =  "/post/Truyen", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> DangTruyen(@RequestBody CreateStoryRequest request) throws IOException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        roleService.saveRole(new Role("ROLE_AUTHOR_" + request.getTenTruyen().toUpperCase(),"ROLE_AUTHOR_" + request.getTenTruyen().toUpperCase(),"Tac Gia cua Truyen " + request.getTenTruyen()));
+        userService.addRoleToUser((String) auth.getPrincipal(),"ROLE_AUTHOR_" + request.getTenTruyen().toUpperCase());
+        truyenService.saveTruyen(request,auth.getName());
+        return ResponseEntity.ok().body("Dang Truyen Thanh Cong");
     }
     @PostMapping("/refresh_token")
     public void RefreshToken(HttpServletRequest request, HttpServletResponse response) throws IndexOutOfBoundsException, IOException {

@@ -2,9 +2,13 @@ package com.example.webtruyen.Infrastructure.ServiceIpl;
 
 import com.example.webtruyen.Core.Application.Service.UserServiceInterface;
 import com.example.webtruyen.Core.Domain.Entity.User.*;
+import com.example.webtruyen.Infrastructure.Exception.AppException;
 import com.example.webtruyen.Infrastructure.Repositories.User.*;
+import com.example.webtruyen.Infrastructure.Request.ChangeMyPasswordRequest;
+import com.example.webtruyen.Infrastructure.Request.CreateUserRequest;
 import com.example.webtruyen.Infrastructure.Request.RegisterRequest;
 import com.example.webtruyen.Infrastructure.Response.ViewMyProfileResponse;
+import com.example.webtruyen.Infrastructure.Response.ViewOtherProfileResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +18,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +48,18 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     public User saveUser(User user) {
         log.info("Saving new user to database");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        Role r = roleRepo.findByName("ROLE_USER");
+        user.getRoles().add(r);
         return userRepo.save(user);
+    }
+
+    @Override
+    public void createUser(CreateUserRequest request) {
+        User user = modelMapper.map(request,User.class);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        Role r = roleRepo.findByName("ROLE_USER");
+        user.getRoles().add(r);
+        userRepo.save(user);
     }
 
     @Override
@@ -94,8 +110,21 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     }
 
     @Override
-    public User ViewOtherProfole(String UserName) {
-        return userRepo.findByUsername(UserName);
+    public ViewOtherProfileResponse ViewOtherProfole(String UserName) {
+        User user = userRepo.findByUsername(UserName);
+        ViewOtherProfileResponse viewOtherProfileResponse = modelMapper.map(user,ViewOtherProfileResponse.class);
+        return viewOtherProfileResponse;
+    }
+
+
+    @Override
+    public void ChangeMyPassword(ChangeMyPasswordRequest request, String UserName) throws AppException{
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        User user = userRepo.findByUsername(UserName);
+        if(bCryptPasswordEncoder.matches(request.oldPassword, user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(request.newPassword));
+        }
+        else throw new AppException("Mat Khau Cu sai");
     }
 
     @Override

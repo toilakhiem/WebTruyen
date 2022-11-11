@@ -1,5 +1,6 @@
 package com.example.webtruyen.Core.Domain.Entity.Truyen;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -8,12 +9,13 @@ import java.io.Serializable;
 @Table(name = "Chapter")
 @NoArgsConstructor
 public class Chapter implements Serializable {
-    public String TenChuong;
+    public String tenChuong;
     @Id
-    public int ChuongSo;
+    private int chuongSo;
     @Column(columnDefinition = "LONGTEXT")
-    public String NoiDungChuong;
+    private String noiDungChuong;
     @ManyToOne
     @JoinColumn(name = "truyen_id")
-    public Truyen truyen;
+    @JsonBackReference
+    private Truyen truyen;
 }

@@ -9,6 +9,6 @@ import java.util.UUID;
 
 @Repository
 public interface PermissionRepo extends JpaRepository<Permission, UUID> {
-    @Query(value = "select p from Permission p where p.Name = ?1")
+    @Query(value = "select p from Permission p where p.name = ?1")
     Permission findPermissionByName(String PermissonName);
 }
