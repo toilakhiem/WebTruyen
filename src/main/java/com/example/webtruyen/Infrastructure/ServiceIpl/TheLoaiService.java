@@ -12,7 +12,7 @@ public class TheLoaiService implements TheLoaiServiceInterface {
     private TheLoaiRepo theLoaiRepo;
     @Override
     public TheLoai themTheLoai(String TenTheLoai) {
-        TheLoai theLoai = new TheLoai();
+        TheLoai theLoai = new TheLoai(TenTheLoai);
         return theLoaiRepo.save(theLoai);
     }
 }

@@ -1,9 +1,12 @@
 package com.example.webtruyen.Infrastructure.Response;
 
+import lombok.Data;
+
+@Data
 public class ViewMyProfileResponse {
-    public String Email;
-    public String UserName;
-    public String Avatar;
-    public String FirstName;
-    public String LastName;
+    public String email;
+    public String userName;
+    public String avatar;
+    public String firstName;
+    public String lastName;
 }

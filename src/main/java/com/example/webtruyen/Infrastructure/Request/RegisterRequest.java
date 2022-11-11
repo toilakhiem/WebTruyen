@@ -1,11 +1,13 @@
 package com.example.webtruyen.Infrastructure.Request;
 
-import java.util.Date;
+import lombok.Data;
 
+import java.util.Date;
+@Data
 public class RegisterRequest {
-    public String Email;
-    public String UserName;
-    public String Password;
-    public String FirstName;
-    public String LastName;
+    public String email;
+    public String userName;
+    public String password;
+    public String firstName;
+    public String lastName;
 }
