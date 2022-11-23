@@ -6,6 +6,8 @@ import com.example.webtruyen.Core.Domain.Entity.User.Role;
 import com.example.webtruyen.Core.Domain.Entity.User.User;
 import com.example.webtruyen.Infrastructure.Repositories.Truyen.TruyenRepo;
 //import com.example.webtruyen.Infrastructure.ServiceIpl.TruyenService;
+import com.example.webtruyen.Infrastructure.Request.AddChapterRequest;
+import com.example.webtruyen.Infrastructure.Request.PostTruyenByAdminRequest;
 import com.example.webtruyen.Infrastructure.Response.GetLastedStoryResponse;
 import com.example.webtruyen.Infrastructure.Response.GetStoryByCategoryResponse;
 import com.example.webtruyen.Infrastructure.Response.GetStoryResponse;
@@ -31,6 +33,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @RestController
 @RequestMapping("/truyen")
 public class TruyenController {
@@ -40,7 +44,6 @@ public class TruyenController {
     private UserService userService;
     @GetMapping("/get/{tenTruyen}")
     public ResponseEntity<GetStoryResponse> getTruyen(@PathVariable(name = "tenTruyen") String tenTruyen){
-
         return ResponseEntity.ok().body(truyenService.getTruyen(tenTruyen));
     }
     @GetMapping("/get/{tenTruyen}/{chapter}")
@@ -62,15 +65,20 @@ public class TruyenController {
         return ResponseEntity.ok().body(truyenService.getTruyenMoiCapNhat());
     }
 
-    @PostMapping("/postTruyenByAdmin")
+    @PostMapping(value = "/postTruyenByAdmin", consumes = APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole('SUPER_ADMIN','ROLE_SUPER_ADMIN')")
-    public ResponseEntity<?> postByAdmin(Truyen truyen, String tacGia){
-        return ResponseEntity.ok().body(truyenService.saveTruyenByAdmin(truyen,tacGia));
+    public ResponseEntity<?> postByAdmin(PostTruyenByAdminRequest request){
+        return ResponseEntity.ok().body(truyenService.saveTruyenByAdmin(request));
+    }
+    @GetMapping("/get/{tenTruyen}/{chapter}/get")
+    public ResponseEntity<?> getChapter(@PathVariable(name = "tenTruyen") String tenTruyen,@PathVariable(name = "chapter") int chapter){
+        return ResponseEntity.ok().body("done");
     }
     @GetMapping("/get/{tenTruyen}/{chapter}/add")
     @PreAuthorize("hasAnyRole('SUPER_ADMIN','ROLE_SUPER_ADMIN', 'AUTHOR_' + #tenTruyen.toUpperCase())")
-    public ResponseEntity<?> addChapter(@PathVariable(name = "tenTruyen") String tenTruyen,@PathVariable(name = "chapter") int chapter){
-        return ResponseEntity.ok().body("done");
+    public ResponseEntity<?> addChapter(@PathVariable(name = "tenTruyen") String tenTruyen, @PathVariable(name = "chapter") int chapter, AddChapterRequest request){
+        truyenService.addChapterForStory(request, tenTruyen);
+        return ResponseEntity.ok().body("Them Chap Thanh Cong");
     }
     @GetMapping("/get/{tenTruyen}/{chapter}/edit")
     @PreAuthorize("hasAnyRole('SUPER_ADMIN','ROLE_SUPER_ADMIN', 'AUTHOR_' + #tenTruyen.toUpperCase())")
