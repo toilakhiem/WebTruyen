@@ -1,5 +1,6 @@
 package com.example.webtruyen.Core.Application.Service;
 
+import com.example.webtruyen.Core.Domain.Entity.Truyen.Author;
 import com.example.webtruyen.Core.Domain.Entity.User.User;
 import com.example.webtruyen.Infrastructure.Exception.AppException;
 import com.example.webtruyen.Infrastructure.Request.ChangeMyPasswordRequest;
@@ -13,6 +14,7 @@ import java.util.List;
 
 public interface UserServiceInterface {
     User saveUser(User user);
+    void saveAuthor(Author author);
     void createUser(CreateUserRequest request);
     void addRoleToUser(String userName, String roleName);
     void addPermissionToRole(String RoleName, String PermissionName);

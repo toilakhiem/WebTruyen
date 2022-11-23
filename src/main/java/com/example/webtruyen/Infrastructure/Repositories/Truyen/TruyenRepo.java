@@ -22,4 +22,6 @@ public interface TruyenRepo extends JpaRepository<Truyen, Long> {
 
     @Query("select t from Truyen t order by t.lastUpdate desc ")
     List<Truyen> getTruyenMoiCapNhat(Pageable pageable);
+    @Query(value = "SELECT max(chuong_so) FROM webtruyenjava.chapter where truyen_id = ?1", nativeQuery = true)
+    int chuongMoiNhat(String truyenId);
 }

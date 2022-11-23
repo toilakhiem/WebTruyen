@@ -59,6 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        http.authorizeHttpRequests().antMatchers(HttpMethod.POST, "/api/user/saveRoleToUser/**").hasAuthority("ROLE_SUPER_ADMIN");
         http.authorizeHttpRequests().anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter);
+        http.logout();
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 

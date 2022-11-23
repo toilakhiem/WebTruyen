@@ -67,7 +67,7 @@ public class TruyenController {
 
     @PostMapping(value = "/postTruyenByAdmin", consumes = APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyRole('SUPER_ADMIN','ROLE_SUPER_ADMIN')")
-    public ResponseEntity<?> postByAdmin(PostTruyenByAdminRequest request){
+    public ResponseEntity<?> postByAdmin(@RequestBody PostTruyenByAdminRequest request){
         return ResponseEntity.ok().body(truyenService.saveTruyenByAdmin(request));
     }
     @GetMapping("/get/{tenTruyen}/{chapter}/get")

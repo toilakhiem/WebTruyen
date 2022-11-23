@@ -1,8 +1,10 @@
 package com.example.webtruyen.Infrastructure.ServiceIpl;
 
 import com.example.webtruyen.Core.Application.Service.UserServiceInterface;
+import com.example.webtruyen.Core.Domain.Entity.Truyen.Author;
 import com.example.webtruyen.Core.Domain.Entity.User.*;
 import com.example.webtruyen.Infrastructure.Exception.AppException;
+import com.example.webtruyen.Infrastructure.Repositories.Truyen.AuthorRepo;
 import com.example.webtruyen.Infrastructure.Repositories.User.*;
 import com.example.webtruyen.Infrastructure.Request.ChangeMyPasswordRequest;
 import com.example.webtruyen.Infrastructure.Request.CreateUserRequest;
@@ -36,6 +38,8 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     @Autowired
     private PermissionRepo permissionRepo;
     @Autowired
+    private AuthorRepo authorRepo;
+    @Autowired
     private PasswordEncoder passwordEncoder;
     private ModelMapper modelMapper;
 
@@ -51,6 +55,11 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         Role r = roleRepo.findByName("ROLE_USER");
         user.getRoles().add(r);
         return userRepo.save(user);
+    }
+
+    @Override
+    public void saveAuthor(Author author) {
+        authorRepo.save(author);
     }
 
     @Override

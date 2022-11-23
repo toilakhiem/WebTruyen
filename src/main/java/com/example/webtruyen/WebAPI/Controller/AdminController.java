@@ -1,5 +1,6 @@
 package com.example.webtruyen.WebAPI.Controller;
 
+import com.example.webtruyen.Core.Domain.Entity.Truyen.Author;
 import com.example.webtruyen.Core.Domain.Entity.Truyen.Truyen;
 import com.example.webtruyen.Core.Domain.Entity.User.User;
 import com.example.webtruyen.Infrastructure.ServiceIpl.TheLoaiService;
@@ -24,6 +25,11 @@ public class AdminController {
     @PostMapping("/saveUser")
     public ResponseEntity<User> saveUser(User user){
         return ResponseEntity.ok().body(userService.saveUser(user));
+    }
+    @PostMapping("/saveAuthor")
+    public ResponseEntity<?> saveAuthor(Author author){
+        userService.saveAuthor(author);
+        return ResponseEntity.ok().body("Save Thanh cong");
     }
 //    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ROLE_SUPER_ADMIN')")
 //    @PreAuthorize("hasRole('SUPER_ADMIN')")

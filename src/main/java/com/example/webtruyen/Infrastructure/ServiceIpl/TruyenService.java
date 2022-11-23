@@ -117,7 +117,7 @@ public class TruyenService implements TruyenServiceInterface {
     @Override
     public void addChapterForStory(AddChapterRequest request, String tenTruyen) {
         Truyen truyen = truyenRepo.findByTen(tenTruyen);
-//        Chapter chapter = (Chapter) truyen.getChapterList().stream().collect(Collectors.toList());
+
         Chapter chapter = new Chapter("Chuong1", 1, "chuong 1", truyen);
         chapterRepo.save(chapter);
         truyen.getChapterList().add(chapter);

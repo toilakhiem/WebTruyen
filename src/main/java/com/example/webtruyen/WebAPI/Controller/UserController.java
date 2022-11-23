@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.example.webtruyen.Core.Application.Service.RoleServiceInterface;
 import com.example.webtruyen.Core.Domain.Entity.Truyen.Truyen;
 import com.example.webtruyen.Core.Domain.Entity.User.Role;
 import com.example.webtruyen.Core.Domain.Entity.User.User;
@@ -49,7 +50,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
-    private RoleService roleService;
+    private RoleServiceInterface roleService;
     @Autowired
     private TruyenService truyenService;
     @PostMapping(value = "/register", consumes = APPLICATION_JSON_VALUE)
