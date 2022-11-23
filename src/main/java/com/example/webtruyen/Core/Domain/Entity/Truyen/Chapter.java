@@ -13,8 +13,10 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class Chapter implements Serializable {
-    private String tenChuong;
     @Id
+    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    private int id;
+    private String tenChuong;
     private int chuongSo;
     @Column(columnDefinition = "LONGTEXT")
     private String noiDungChuong;

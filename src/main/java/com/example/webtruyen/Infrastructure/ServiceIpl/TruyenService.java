@@ -117,8 +117,8 @@ public class TruyenService implements TruyenServiceInterface {
     @Override
     public void addChapterForStory(AddChapterRequest request, String tenTruyen) {
         Truyen truyen = truyenRepo.findByTen(tenTruyen);
-
-        Chapter chapter = new Chapter("Chuong1", 1, "chuong 1", truyen);
+        Chapter chapter = modelMapper.map(request,Chapter.class);
+        chapter.setTruyen(truyen);
         chapterRepo.save(chapter);
         truyen.getChapterList().add(chapter);
     }

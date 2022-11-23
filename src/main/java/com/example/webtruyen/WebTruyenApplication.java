@@ -30,37 +30,37 @@ public class WebTruyenApplication {
     public ModelMapper modelMapper(){
         return new ModelMapper();
     }
-//    @Bean
-//    CommandLineRunner runner(UserService userService, RoleService roleService, PermissionService permissionService, TheLoaiService theLoaiService, TruyenService truyenService){
-//    return args -> {
-//        roleService.saveRole(new Role("ROLE_ADMIN","ROLE_ADMIN","ADMIN"));
-//        roleService.saveRole(new Role("ROLE_USER","ROLE_USER","USER"));
-//        roleService.saveRole(new Role("ROLE_SUPER_ADMIN","ROLE_SUPER_ADMIN","SUPER_ADMIN"));
-//
-//        userService.saveUser(new User("khiem171222@gmail.com","admin","admin","admin","admin"));
-//        userService.saveUser(new User("tmp1@gmail.com", "tmp1", "tmp1", "tmp", "1"));
-//        userService.saveUser(new User("tmp2@gmail.com", "tmp2", "tmp2", "tmp", "2"));
-//        userService.saveUser(new User("tmp3@gmail.com", "tmp3", "tmp3", "tmp", "3"));
-//        userService.saveUser(new User("tmp4@gmail.com", "tmp4", "tmp4", "tmp", "4"));
-//        userService.saveUser(new User("tmp5@gmail.com", "tmp5", "tmp5", "tmp", "5"));
-//        userService.saveUser(new User("tmp6@gmail.com", "tmp6", "tmp6", "tmp", "6"));
-//
-//
-//        permissionService.savePermission(new Permission("user:add"));
-//        permissionService.savePermission(new Permission("user:edit"));
-//        permissionService.savePermission(new Permission("user:lockAndUnlock"));
-//
-//
-//        userService.addRoleToUser("admin","ROLE_SUPER_ADMIN");
-//        userService.addPermissionToRole("ROLE_SUPER_ADMIN","user:add");
-//        userService.addPermissionToRole("ROLE_SUPER_ADMIN","user:edit");
-//        userService.addPermissionToRole("ROLE_SUPER_ADMIN","user:lockAndUnlock");
-//
-//        theLoaiService.themTheLoai("Kiem_Hiep");
-//        theLoaiService.themTheLoai("Sac_Hiep");
-//        theLoaiService.themTheLoai("Ngon_Tinh");
-//        theLoaiService.themTheLoai("Huyen_Huyen");
-//        theLoaiService.themTheLoai("Hai_Huoc");
+    @Bean
+    CommandLineRunner runner(UserService userService, RoleService roleService, PermissionService permissionService, TheLoaiService theLoaiService, TruyenService truyenService){
+    return args -> {
+        roleService.saveRole(new Role("ROLE_ADMIN","ROLE_ADMIN","ADMIN"));
+        roleService.saveRole(new Role("ROLE_USER","ROLE_USER","USER"));
+        roleService.saveRole(new Role("ROLE_SUPER_ADMIN","ROLE_SUPER_ADMIN","SUPER_ADMIN"));
+
+        userService.saveUser(new User("khiem171222@gmail.com","admin","admin","admin","admin"));
+        userService.saveUser(new User("tmp1@gmail.com", "tmp1", "tmp1", "tmp", "1"));
+        userService.saveUser(new User("tmp2@gmail.com", "tmp2", "tmp2", "tmp", "2"));
+        userService.saveUser(new User("tmp3@gmail.com", "tmp3", "tmp3", "tmp", "3"));
+        userService.saveUser(new User("tmp4@gmail.com", "tmp4", "tmp4", "tmp", "4"));
+        userService.saveUser(new User("tmp5@gmail.com", "tmp5", "tmp5", "tmp", "5"));
+        userService.saveUser(new User("tmp6@gmail.com", "tmp6", "tmp6", "tmp", "6"));
+
+
+        permissionService.savePermission(new Permission("user:add"));
+        permissionService.savePermission(new Permission("user:edit"));
+        permissionService.savePermission(new Permission("user:lockAndUnlock"));
+
+
+        userService.addRoleToUser("admin","ROLE_SUPER_ADMIN");
+        userService.addPermissionToRole("ROLE_SUPER_ADMIN","user:add");
+        userService.addPermissionToRole("ROLE_SUPER_ADMIN","user:edit");
+        userService.addPermissionToRole("ROLE_SUPER_ADMIN","user:lockAndUnlock");
+
+        theLoaiService.themTheLoai("Kiem_Hiep");
+        theLoaiService.themTheLoai("Sac_Hiep");
+        theLoaiService.themTheLoai("Ngon_Tinh");
+        theLoaiService.themTheLoai("Huyen_Huyen");
+        theLoaiService.themTheLoai("Hai_Huoc");
 //
 //        truyenService.saveTruyenByAdmin(
 //                new Truyen(
@@ -147,8 +147,8 @@ public class WebTruyenApplication {
 //                                "Sau đó, lão Dương lại chết, rồi mở mắt ra đã thấy mình nằm dưới một vách đá, trong cơ thể nhỏ nhắn xinh xắn của một mỹ thiếu niên.\n" +
 //                                "Lão xuyên không rồi."),
 //                "Slaydark");
-//        };
-//
-//
-//    }
+        };
+
+
+    }
 }
